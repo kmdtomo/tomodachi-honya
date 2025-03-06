@@ -72,11 +72,11 @@ export function OwnerCard({ owner, onClick }: OwnerCardProps) {
           </div>
 
           <div className="text-center flex-grow">
-            <h3 className="text-2xl font-bold text-white mb-2">
+            <h3 className="text-2xl font-bold text-white mb-2 line-clamp-1">
               {owner.name}
             </h3>
             {owner.job && (
-              <p className="text-gray-300 text-sm mb-2">
+              <p className="text-gray-300 text-sm mb-2 line-clamp-1">
                 {owner.job}
               </p>
             )}
@@ -88,7 +88,7 @@ export function OwnerCard({ owner, onClick }: OwnerCardProps) {
             </div>
 
             <div className="flex flex-wrap justify-center gap-2 mb-4 line-clamp-1">
-              {owner.hobby?.map((h: HobbyType, index: number) => (
+              {owner.hobby?.slice(0, 5).map((h: HobbyType, index: number) => (
                 <span
                   key={index}
                   className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm text-white line-clamp-1"

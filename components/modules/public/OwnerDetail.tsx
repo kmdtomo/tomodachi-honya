@@ -109,7 +109,7 @@ export default function OwnerDetail({ owner }: OwnerDetailProps) {
             {/* 自己紹介と得意分野を2カラムに */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <h2 className="text-base sm:text-lg font-semibold text-gray-400 mb-2">自己紹介</h2>
+                <h2 className="text-base sm:text-lg font-semibold text-gray-400 mb-2">一言メッセージ</h2>
                 <p className="text-xs sm:text-sm leading-relaxed pr-0 sm:pr-4">
                   {owner.bio || "メッセージはありません。"}
                 </p>
