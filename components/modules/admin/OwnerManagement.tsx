@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Owner } from "@/types/database";
-import { createOwnerWithHobbies, updateOwner, getOwners } from "@/actions/supabase/owner/actions";
+import { createOwnerWithHobbies, updateOwner, getOwners, deleteOwner } from "@/actions/supabase/owner/actions";
 import { uploadImages } from "@/utils/uploadImage";
 import { AdminFormModal } from "@/components/ui/admin/AdminFormModal";
 import { OwnerCard } from "@/components/ui/common/OwnerCard";
@@ -176,6 +176,33 @@ export default function OwnerManagement({ initialOwners }: OwnerManagementProps)
     setIsOpen(true);
   };
 
+  const handleDeleteOwner = async () => {
+    if (!editingOwner || !confirm('このオーナーを削除してもよろしいですか？')) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const { error } = await deleteOwner(editingOwner.id);
+      
+      if (error) {
+        throw error;
+      }
+
+      setOwners(prevOwners => prevOwners.filter(owner => owner.id !== editingOwner.id));
+      setFilteredOwners(prevOwners => prevOwners.filter(owner => owner.id !== editingOwner.id));
+      setIsOpen(false);
+      setEditingOwner(null);
+      resetForm();
+      alert('オーナーを削除しました');
+    } catch (error) {
+      console.error('削除エラー:', error);
+      alert('オーナーの削除に失敗しました');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen text-white px-6">
       {isLoading ? (
@@ -341,6 +368,20 @@ export default function OwnerManagement({ initialOwners }: OwnerManagementProps)
                   趣味を追加
                 </Button>
               </div>
+
+              {editingOwner && (
+                <div className="mt-6 pt-4 border-t border-gray-700">
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={handleDeleteOwner}
+                    disabled={isSubmitting}
+                    className="w-full"
+                  >
+                    このオーナーを削除
+                  </Button>
+                </div>
+              )}
             </AdminFormModal>
           </div>
 
