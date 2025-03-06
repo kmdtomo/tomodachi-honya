@@ -19,3 +19,10 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Adobe Fonts 用のフォントクラス */
+.font-adobe {
+  font-family: "hot-gfkaishokk", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
