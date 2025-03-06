@@ -12,6 +12,7 @@ export interface Owner {
   hobby?: Hobby[];
   job: string | null;
   connection: string | null;
+  youtube_url: string | null;
 }
 
 export interface Hobby {

@@ -35,6 +35,7 @@ export default function OwnerManagement({ initialOwners }: OwnerManagementProps)
     age: '',
     instagram_url: '',
     x_url: '',
+    youtube_url: '',
     bio: '',
     job: '',
     connection: '',
@@ -104,7 +105,14 @@ export default function OwnerManagement({ initialOwners }: OwnerManagementProps)
       };
 
       if (editingOwner) {
-        const { data: updatedOwner } = await updateOwner(editingOwner.id, ownerData);
+        const validHobbies = hobbies.filter(hobby => hobby.trim() !== '');
+        
+        const { data: updatedOwner } = await updateOwner(
+          editingOwner.id, 
+          ownerData,
+          validHobbies
+        );
+        
         if (updatedOwner) {
           setOwners(prevOwners => 
             prevOwners.map(owner => 
@@ -118,7 +126,8 @@ export default function OwnerManagement({ initialOwners }: OwnerManagementProps)
           );
         }
       } else {
-        await createOwnerWithHobbies(ownerData, hobbies);
+        const validHobbies = hobbies.filter(hobby => hobby.trim() !== '');
+        await createOwnerWithHobbies(ownerData, validHobbies);
         await fetchOwners();
       }
 
@@ -141,6 +150,7 @@ export default function OwnerManagement({ initialOwners }: OwnerManagementProps)
       age: '',
       instagram_url: '',
       x_url: '',
+      youtube_url: '',
       bio: '',
       job: '',
       connection: '',
@@ -157,16 +167,17 @@ export default function OwnerManagement({ initialOwners }: OwnerManagementProps)
       age: owner.age,
       instagram_url: owner.instagram_url,
       x_url: owner.x_url,
+      youtube_url: owner.youtube_url,
       bio: owner.bio,
       job: owner.job,
       connection: owner.connection,
     });
-    setHobbies(owner.hobby?.map((h: HobbyType) => h.owner_hobby || '') || ['']);
+    setHobbies(owner.hobby?.map(h => h.owner_hobby || '').filter(Boolean) || ['']);
     setIsOpen(true);
   };
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-white px-6">
       {isLoading ? (
         <Loading fullScreen />
       ) : (
@@ -254,6 +265,15 @@ export default function OwnerManagement({ initialOwners }: OwnerManagementProps)
                 <Input
                   value={formData.x_url || ''}
                   onChange={(e) => setFormData({ ...formData, x_url: e.target.value })}
+                  className="bg-gray-800"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2">YouTube URL</label>
+                <Input
+                  value={formData.youtube_url || ''}
+                  onChange={(e) => setFormData({ ...formData, youtube_url: e.target.value })}
                   className="bg-gray-800"
                 />
               </div>

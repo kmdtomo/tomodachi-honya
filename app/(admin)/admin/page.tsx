@@ -45,9 +45,9 @@ export default function AdminPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 gap-4 sm:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
               <Link href="/admin/owner">
-                <Card className="p-6 sm:p-8 hover:bg-white/10 transition-colors border border-gray-800 rounded-lg">
+                <Card className="p-6 sm:p-8 hover:bg-white/10 transition-colors border border-gray-800 rounded-lg h-full">
                   <div className="flex items-center sm:flex-col sm:items-center text-left sm:text-center">
                     <div className="bg-gray-800 p-3 sm:p-4 rounded-full mr-4 sm:mr-0 sm:mb-4">
                       <UserIcon size={24} className="text-white" />
@@ -61,7 +61,7 @@ export default function AdminPage() {
               </Link>
               
               <Link href="/admin/book">
-                <Card className="p-6 sm:p-8 hover:bg-white/10 transition-colors border border-gray-800 rounded-lg">
+                <Card className="p-6 sm:p-8 hover:bg-white/10 transition-colors border border-gray-800 rounded-lg h-full">
                   <div className="flex items-center sm:flex-col sm:items-center text-left sm:text-center">
                     <div className="bg-gray-800 p-3 sm:p-4 rounded-full mr-4 sm:mr-0 sm:mb-4">
                       <BookIcon size={24} className="text-white" />
@@ -75,7 +75,7 @@ export default function AdminPage() {
               </Link>
               
               <Link href="/admin/event">
-                <Card className="p-6 sm:p-8 hover:bg-white/10 transition-colors border border-gray-800 rounded-lg">
+                <Card className="p-6 sm:p-8 hover:bg-white/10 transition-colors border border-gray-800 rounded-lg h-full">
                   <div className="flex items-center sm:flex-col sm:items-center text-left sm:text-center">
                     <div className="bg-gray-800 p-3 sm:p-4 rounded-full mr-4 sm:mr-0 sm:mb-4">
                       <CalendarIcon size={24} className="text-white" />
@@ -88,7 +88,6 @@ export default function AdminPage() {
                 </Card>
               </Link>
             </div>
-            
           </>
         )}
       </div>
