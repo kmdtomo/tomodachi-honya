@@ -306,7 +306,7 @@ export default function OwnerManagement({ initialOwners }: OwnerManagementProps)
               </div>
 
               <div>
-                <label className="block mb-2">自己紹介</label>
+                <label className="block mb-2">一言メッセージ</label>
                 <Textarea
                   value={formData.bio || ''}
                   onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
@@ -335,7 +335,7 @@ export default function OwnerManagement({ initialOwners }: OwnerManagementProps)
               </div>
 
               <div>
-                <label className="block mb-2">趣味</label>
+                <label className="block mb-2">趣味・特技</label>
                 {hobbies.map((hobby, index) => (
                   <div key={index} className="flex gap-2 mb-2">
                     <Input
