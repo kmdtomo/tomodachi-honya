@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function OwnersPage() {
   return (
-    <main className="pt-16">
+    <main className="pt-10 md:px-6">
       <OwnerList />
     </main>
   );

@@ -23,7 +23,7 @@ export default async function OwnerDetailPage({ params }: Props) {
   }
 
   return (
-    <div className="pt-16">
+    <div className="pt-10 md:px-6">
       <OwnerDetail owner={ownerResponse.data} />
       <div className="container mx-auto px-10 pt-8">
         <h2 className="text-2xl font-bold text-white mb-4 font-adobe">

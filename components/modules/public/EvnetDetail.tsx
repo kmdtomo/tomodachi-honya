@@ -14,7 +14,7 @@ type EventDetailProps = {
 
 export function EventDetail({ event }: EventDetailProps) {
     return (
-      <div className="flex items-center justify-center bg-black pt-16">
+      <div className="flex items-center justify-center bg-black pt-10 md:px-4">
         <div className="container md:px-4 px-4 py-3 md:py-0">
           {/* イベント詳細カード */}
           <section className="mb-8 md:mb-16 mx-2 md:ml-8">

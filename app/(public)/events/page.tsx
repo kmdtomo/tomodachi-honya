@@ -93,7 +93,7 @@ export default function EventPage() {
   }
 
   return (
-    <div className="pb-10 bg-black pt-16">
+    <div className="pb-10 bg-black pt-10 px-6">
       <div className="container mx-auto px-4">
         <UpcomingEvents 
           events={upcomingEvents} 

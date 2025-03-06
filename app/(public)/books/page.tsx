@@ -11,7 +11,7 @@ export default async function BooksPage() {
   }
 
   return (
-    <div className="pb-10 bg-black pt-16">
+    <div className="pb-10 bg-black pt-10">
       <div className="container mx-auto px-4">
         {!books ? (
           <Loading fullScreen text="本の情報を読み込み中..." />
