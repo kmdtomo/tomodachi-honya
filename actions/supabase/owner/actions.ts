@@ -124,7 +124,13 @@ export async function deleteOwner(id: string) {
     const cookieStore = cookies();
     const supabase = await createClient(cookieStore);
 
-    // 関連する趣味も削除
+    // 関連するbooksを削除
+    await supabase
+      .from('books')
+      .delete()
+      .eq('owner_id', id);
+
+    // 関連する趣味を削除
     await supabase
       .from('hobby')
       .delete()

@@ -13,7 +13,7 @@ import { SearchBar } from "@/components/ui/admin/SearchBar";
 import { AdminFormModal } from "@/components/ui/admin/AdminFormModal";
 import { PastEventCard } from "@/components/ui/common/PastEventCard";
 import { Event, EventImage } from "@/types/database";
-import { createEvent, updateEvent, getEventDetails, getEventsLight } from "@/actions/supabase/event/actions";
+import { createEvent, updateEvent, getEventDetails, getEventsLight, deleteEvent } from "@/actions/supabase/event/actions";
 import { uploadImages } from "@/utils/uploadImage";
 import { toast } from "react-hot-toast";
 import { formatForDateTimeInput } from "@/utils/dateUtils";
@@ -300,6 +300,37 @@ export default function EventManagement({ initialEvents }: EventManagementProps)
     setExistingImages(existingImages.filter((img) => img.image_url !== imageUrl));
   };
 
+  // handleDeleteEvent 関数を追加
+  const handleDeleteEvent = async () => {
+    if (!editingEvent || !confirm('このイベントを削除してもよろしいですか？')) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const { error } = await deleteEvent(editingEvent.id);
+      
+      if (error) {
+        throw error;
+      }
+
+      setEvents(prevEvents => prevEvents.filter(event => event.id !== editingEvent.id));
+      setUpcomingEvents(prevEvents => prevEvents.filter(event => event.id !== editingEvent.id));
+      setPastEvents(prevEvents => prevEvents.filter(event => event.id !== editingEvent.id));
+      setFilteredUpcomingEvents(prevEvents => prevEvents.filter(event => event.id !== editingEvent.id));
+      setFilteredPastEvents(prevEvents => prevEvents.filter(event => event.id !== editingEvent.id));
+      setIsOpen(false);
+      setEditingEvent(null);
+      resetForm();
+      alert('イベントを削除しました');
+    } catch (error) {
+      console.error('削除エラー:', error);
+      alert('イベントの削除に失敗しました');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen text-white px-6">
       {loading ? (
@@ -490,6 +521,21 @@ export default function EventManagement({ initialEvents }: EventManagementProps)
                     className="bg-gray-800"
                   />
                 </div>
+
+                {/* 削除ボタンを追加 */}
+                {editingEvent && (
+                  <div className="mt-6 pt-4 border-t border-gray-700">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={handleDeleteEvent}
+                      disabled={isSubmitting}
+                      className="w-full"
+                    >
+                      このイベントを削除
+                    </Button>
+                  </div>
+                )}
               </AdminFormModal>
             </div>
           </div>
