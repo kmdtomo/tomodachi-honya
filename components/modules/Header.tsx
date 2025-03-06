@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Instagram, Menu, X } from "lucide-react";
 
 export default function Header() {
@@ -17,7 +18,10 @@ export default function Header() {
 
   return (
     <header className="w-full fixed top-0 z-50 bg-black border-b-2 border-white/40">
-      <div className="container mx-auto flex items-center justify-between px-4 py-5 font-adobe">
+      <div 
+        className="container mx-auto flex items-center justify-between px-4 py-2 font-adobe"
+        suppressHydrationWarning
+      >
         {/* モバイル用ハンバーガーメニュー */}
         <button 
           className="text-white md:hidden font-adobe" 
@@ -29,11 +33,15 @@ export default function Header() {
 
         {/* ロゴ - モバイルでは中央に配置 */}
         <div className="flex items-center md:space-x-4">
-          <Link
-            href="/"
-            className="text-white text-xl font-bold hover:text-gray-300 transition-colors font-adobe"
-          >
-            友達本屋
+          <Link href="/" className="text-white hover:text-gray-300 transition-colors">
+            <Image
+              src="/logo.png"
+              alt="友達本屋"
+              width={120}
+              height={40}
+              className="object-contain"
+              priority
+            />
           </Link>
         </div>
 
@@ -66,7 +74,7 @@ export default function Header() {
             <li>
               <Link
                 href="/events"
-                className="text-white hover:text-gray-300 transition-colors font-adobe  "
+                className="text-white hover:text-gray-300 transition-colors font-adobe"
               >
                 イベント一覧
               </Link>

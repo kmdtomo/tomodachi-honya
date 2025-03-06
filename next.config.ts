@@ -1,6 +1,5 @@
 import type { NextConfig } from "next";
 
-// next.config.js
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -17,6 +16,14 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'books.google.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'books.google.com',
       },
     ],
   },
