@@ -58,21 +58,63 @@ export async function createOwnerWithHobbies(ownerData: Partial<Owner>, hobbies:
   }
 }
 
-export async function updateOwner(id: string, ownerData: Partial<Owner>) {
+export async function updateOwner(
+  id: string, 
+  ownerData: Partial<Owner>,
+  hobbies: string[]
+) {
   try {
     const cookieStore = cookies();
     const supabase = await createClient(cookieStore);
 
-    const { data, error } = await supabase
+    // オーナー情報の更新
+    const { data: updatedOwner, error: ownerError } = await supabase
       .from('owner')
       .update(ownerData)
       .eq('id', id)
       .select()
       .single();
 
-    if (error) throw error;
-    return { data, error: null };
+    if (ownerError) throw ownerError;
+
+    // 既存の趣味を削除
+    const { error: deleteError } = await supabase
+      .from('hobby')
+      .delete()
+      .eq('owner_id', id);
+
+    if (deleteError) throw deleteError;
+
+    // 空の趣味を除外して新しい趣味を追加
+    const validHobbies = hobbies.filter(hobby => hobby.trim() !== '');
+    if (validHobbies.length > 0) {
+      const hobbyData = validHobbies.map(hobby => ({
+        owner_id: id,
+        owner_hobby: hobby.trim()
+      }));
+
+      const { error: insertError } = await supabase
+        .from('hobby')
+        .insert(hobbyData);
+
+      if (insertError) throw insertError;
+    }
+
+    // 更新後のオーナー情報を趣味と一緒に取得
+    const { data: ownerWithHobbies, error: fetchError } = await supabase
+      .from('owner')
+      .select(`
+        *,
+        hobby:hobby(*)
+      `)
+      .eq('id', id)
+      .single();
+
+    if (fetchError) throw fetchError;
+
+    return { data: ownerWithHobbies, error: null };
   } catch (error) {
+    console.error('Update owner error:', error);
     return { data: null, error };
   }
 }

@@ -25,9 +25,9 @@ export default function Home() {
        
         <div className="flex flex-col md:flex-row gap-4 px-4 mb-10">
           {/* ミッション（左） */}
-          <div className="w-full md:w-1/2">
-            <div className="relative">
-              <div className="border-2 border-white/40 shadow-lg transition-shadow hover:shadow-2xl rounded-lg p-4 md:p-6 relative md:min-h-[290px]">
+          <div className="w-full md:w-1/2 flex">
+            <div className="relative flex-1">
+              <div className="border-2 border-white/40 shadow-lg transition-shadow hover:shadow-2xl rounded-lg p-4 md:p-6 relative h-full flex flex-col justify-center">
                 {/* 既存の左側アクセントバーをそのまま適用 */}
                 <div className="hidden md:block absolute left-0 top-0 bottom-0 w-1 bg-[#ccb054] rounded-l-lg"></div>
                 {/* 以下、既存のミッション内容 */}
@@ -48,9 +48,9 @@ export default function Home() {
           </div>
 
           {/* ビジョン（右） */}
-          <div className="w-full md:w-1/2">
-            <div className="relative">
-              <div className="border-2 border-white/40 shadow-lg transition-shadow hover:shadow-2xl rounded-lg p-4 md:p-6 relative max-h-[300px] md:max-h-[300px] overflow-y-auto">
+          <div className="w-full md:w-1/2 flex">
+            <div className="relative flex-1">
+              <div className="border-2 border-white/40 shadow-lg transition-shadow hover:shadow-2xl rounded-lg p-4 md:p-6 relative h-full flex flex-col justify-center">
                 {/* 既存の左側アクセントバーをそのまま適用 */}
                 <div className="hidden md:block absolute left-0 top-0 bottom-0 w-1 bg-[#ccb054] rounded-l-lg"></div>
                 {/* 以下、既存のビジョン内容 */}

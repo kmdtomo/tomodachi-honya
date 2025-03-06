@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Owner } from "@/types/database";
-import { MapPin, Instagram } from "lucide-react";
+import { MapPin, Instagram, Youtube } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { LucideIcon } from "lucide-react";
@@ -87,11 +87,11 @@ export function OwnerCard({ owner, onClick }: OwnerCardProps) {
               <span>{owner.age}歳</span>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-2 mb-4">
+            <div className="flex flex-wrap justify-center gap-2 mb-4 line-clamp-1">
               {owner.hobby?.map((h: HobbyType, index: number) => (
                 <span
                   key={index}
-                  className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm text-white"
+                  className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm text-white line-clamp-1"
                 >
                   {h.owner_hobby}
                 </span>
@@ -112,6 +112,11 @@ export function OwnerCard({ owner, onClick }: OwnerCardProps) {
             {owner.x_url && (
               <a href={owner.x_url} className="text-blue-300 hover:text-blue-200">
                 <XIcon size={24} />
+              </a>
+            )}
+            {owner.youtube_url && (
+              <a href={owner.youtube_url} className="text-red-400 hover:text-red-300">
+                <Youtube size={24} />
               </a>
             )}
           </div>

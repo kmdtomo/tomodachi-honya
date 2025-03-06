@@ -301,7 +301,7 @@ export default function EventManagement({ initialEvents }: EventManagementProps)
   };
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-white px-6">
       {loading ? (
         <Loading fullScreen />
       ) : (
@@ -501,22 +501,24 @@ export default function EventManagement({ initialEvents }: EventManagementProps)
             onValueChange={(value) => setActiveTab(value)}
             value={activeTab}
           >
-            <TabsList className="mb-6 sm:mb-8 bg-gray-800 p-1 rounded-lg w-full flex overflow-x-auto">
-              <TabsTrigger 
-                value="upcoming" 
-                className="flex-1 flex items-center justify-center data-[state=active]:bg-blue-600 data-[state=active]:text-white px-4 sm:px-6 py-2 rounded-md transition-all whitespace-nowrap"
-              >
-                <Calendar className="mr-2" size={18} />
-                開催予定 {filteredUpcomingEvents.length > 0 && `(${filteredUpcomingEvents.length})`}
-              </TabsTrigger>
-              <TabsTrigger 
-                value="past" 
-                className="flex-1 flex items-center justify-center data-[state=active]:bg-gray-600 data-[state=active]:text-white px-4 sm:px-6 py-2 rounded-md transition-all whitespace-nowrap"
-              >
-                <CalendarCheck className="mr-2" size={18} />
-                過去の開催 {filteredPastEvents.length > 0 && `(${filteredPastEvents.length})`}
-              </TabsTrigger>
-            </TabsList>
+            <div className="flex justify-start">
+              <TabsList className="mb-6 sm:mb-8 bg-gray-800 p-1 rounded-lg w-full sm:w-[400px] flex overflow-x-auto">
+                <TabsTrigger 
+                  value="upcoming" 
+                  className="flex-1 flex items-center justify-center data-[state=active]:bg-blue-600 data-[state=active]:text-white px-4 sm:px-6 py-2 rounded-md transition-all whitespace-nowrap"
+                >
+                  <Calendar className="mr-2" size={18} />
+                  開催予定 {filteredUpcomingEvents.length > 0 && `(${filteredUpcomingEvents.length})`}
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="past" 
+                  className="flex-1 flex items-center justify-center data-[state=active]:bg-gray-600 data-[state=active]:text-white px-4 sm:px-6 py-2 rounded-md transition-all whitespace-nowrap"
+                >
+                  <CalendarCheck className="mr-2" size={18} />
+                  過去の開催 {filteredPastEvents.length > 0 && `(${filteredPastEvents.length})`}
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             {/* 開催予定タブ */}
             <TabsContent value="upcoming">

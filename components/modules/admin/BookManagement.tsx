@@ -347,7 +347,7 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
   };
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-white px-6">
       {isLoading ? (
         <Loading fullScreen />
       ) : (
