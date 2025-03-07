@@ -14,14 +14,14 @@ type EventDetailProps = {
 
 export function EventDetail({ event }: EventDetailProps) {
     return (
-      <div className="flex items-center justify-center bg-black pt-10 md:px-4">
+      <div className="flex items-center justify-center bg-black pt-10 pb-14 md:px-4">
         <div className="container md:px-4 px-4 py-3 md:py-0">
           {/* イベント詳細カード */}
           <section className="mb-8 md:mb-16 mx-2 md:ml-8">
             <Card className="group relative rounded-xl transition-all duration-300 border-0">
-              <div className="flex flex-col md:flex-row">
-                {/* サムネイル部分 - PC版は元のまま維持 */}
-                <div className="relative h-[200px] md:h-auto md:max-w-[450px] md:min-h-[300px] w-full flex-shrink-0 rounded-xl">
+              <div className="flex flex-col md:flex-row md:h-[400px]">
+                {/* サムネイル部分 - 高さを固定 */}
+                <div className="relative h-[200px] md:w-[450px] md:h-full flex-shrink-0 rounded-xl">
                   <Image
                     src={event.thumbnail_url || "/default-event.jpg"}
                     alt={event.name}
@@ -31,8 +31,8 @@ export function EventDetail({ event }: EventDetailProps) {
                   <div className="absolute inset-0 bg-black/20" />
                 </div>
   
-                {/* コンテンツ部分 */}
-                <div className="flex-1 p-2 md:p-6 bg-gradient-to-r from-black/90 to-black/70 relative">
+                {/* コンテンツ部分 - スクロール可能に */}
+                <div className="flex-1 p-2 md:p-6 bg-gradient-to-r from-black/90 to-black/70 relative md:overflow-y-auto">
                   <div className="h-full flex flex-col">
                     <h2 className="text-xl md:text-2xl font-bold text-white drop-shadow-xl mt-5 md:mt-0 mb-4 md:mb-5">
                       {event.name}
