@@ -31,6 +31,8 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
   const [owners, setOwners] = useState<Owner[]>(initialOwners);
   const [filteredBooks, setFilteredBooks] = useState<Book[]>(initialBooks);
   const [searchQuery, setSearchQuery] = useState("");
+  const [ownerSearchQuery, setOwnerSearchQuery] = useState("");
+  const [filteredOwners, setFilteredOwners] = useState<Owner[]>(initialOwners);
   const [isOpen, setIsOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +48,8 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
   const [manualTitle, setManualTitle] = useState("");
   const [manualAuthor, setManualAuthor] = useState("");
   const [manualDescription, setManualDescription] = useState("");
+  const [isOwnerComboboxOpen, setIsOwnerComboboxOpen] = useState(false);
+  const [selectedOwner, setSelectedOwner] = useState<Owner | null>(null);
 
   // 検索機能
   const handleSearch = (query: string) => {
@@ -74,6 +78,32 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
     });
     
     setFilteredBooks(filtered);
+  };
+
+  // オーナー検索機能を追加
+  const handleOwnerSearch = (query: string) => {
+    setOwnerSearchQuery(query);
+    setIsOwnerComboboxOpen(true);
+    
+    if (!query.trim()) {
+      setFilteredOwners(owners);
+      return;
+    }
+    
+    const lowercaseQuery = query.toLowerCase();
+    const filtered = owners.filter(owner => 
+      owner.name?.toLowerCase().includes(lowercaseQuery)
+    );
+    
+    setFilteredOwners(filtered);
+  };
+
+  // オーナー選択時の処理
+  const handleOwnerSelect = (owner: Owner) => {
+    setSelectedOwner(owner);
+    setSelectedOwnerId(owner.id);
+    setOwnerSearchQuery(owner.name || "");
+    setIsOwnerComboboxOpen(false);
   };
 
   // 本の一覧を再取得
@@ -107,22 +137,22 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
     setIsSubmitting(true);
     try {
       const res = await fetch(`/api/book?isbn=${isbnInput.replace(/-/g, "")}`);
+      const data = await res.json();
       
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || 'APIリクエストに失敗しました');
-      }
-
-      const bookData = await res.json();
-      
-      if (!bookData || Object.keys(bookData).length === 0) {
-        toast.error("入力されたISBNに該当する本が見つかりませんでした");
+        alert(data.error || 'APIリクエストに失敗しました');
         return;
       }
       
-      setBookPreview(bookData);
+      if (!data || Object.keys(data).length === 0) {
+        alert("入力されたISBNに該当する本が見つかりませんでした");
+        return;
+      }
+      
+      setBookPreview(data);
     } catch (error: any) {
       console.error("本の情報取得エラー:", error);
+      alert(error.message || "本の情報が取得できませんでした");
       toast.error(error.message || "本の情報が取得できませんでした");
       setBookPreview(null);
     } finally {
@@ -282,7 +312,6 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
         response = await createBook(bookData);
       }
 
-      if (response.error) throw response.error;
       
       toast.success(isEditMode ? "本を更新しました" : "本を登録しました");
       resetForm();
@@ -616,21 +645,39 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
               </div>
 
               {/* オーナー選択 */}
-              <div>
+              <div className="relative">
                 <label className="block mb-2">オーナー <span className="text-red-500">*</span></label>
-                <select
-                  value={selectedOwnerId}
-                  onChange={(e) => setSelectedOwnerId(e.target.value)}
-                  className="w-full bg-gray-800 text-white rounded-md p-2"
-                  required
-                >
-                  <option value="">オーナーを選択してください</option>
-                  {owners.map((owner) => (
-                    <option key={owner.id} value={owner.id}>
-                      {owner.name}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <Input
+                    type="text"
+                    value={ownerSearchQuery}
+                    onChange={(e) => handleOwnerSearch(e.target.value)}
+                    onFocus={() => setIsOwnerComboboxOpen(true)}
+                    placeholder="オーナーを検索して選択..."
+                    className="bg-gray-800 w-full"
+                  />
+                  {isOwnerComboboxOpen && (
+                    <div className="absolute z-50 w-full mt-1 bg-gray-800 border border-gray-700 rounded-md shadow-lg max-h-[200px] overflow-y-auto">
+                      {filteredOwners.length === 0 ? (
+                        <div className="px-4 py-2 text-sm text-gray-400">
+                          該当するオーナーが見つかりません
+                        </div>
+                      ) : (
+                        filteredOwners.map((owner) => (
+                          <div
+                            key={owner.id}
+                            onClick={() => handleOwnerSelect(owner)}
+                            className={`px-4 py-2 cursor-pointer hover:bg-gray-700 ${
+                              selectedOwnerId === owner.id ? 'bg-gray-700' : ''
+                            }`}
+                          >
+                            {owner.name}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </AdminFormModal>
           </div>
