@@ -39,7 +39,7 @@ export function BookCard({ book, onClick }: BookCardProps) {
             <span className="text-lg font-bold text-white mr-3">¥{book.price || "未設定"}</span>
             <span className="text-xs text-gray-400">税込</span>
           </div>
-          <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-[9px] text-white">
+          <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-[9px] text-white truncate max-w-[120px] inline-block">
             {book.owner?.name || "未設定"}
           </span>
         </div>

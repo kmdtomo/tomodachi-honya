@@ -31,7 +31,7 @@ export default function Home() {
                 {/* 既存の左側アクセントバーをそのまま適用 */}
                 <div className="hidden md:block absolute left-0 top-0 bottom-0 w-1 bg-[#ccb054] rounded-l-lg"></div>
                 {/* 以下、既存のミッション内容 */}
-                <h2 className="text-lg md:text-3xl font-bold mb-1 luxury-text glow animate-text-shadow-drop-center font-adobe">
+                <h2 className="text-lg md:text-3xl font-bold mb-1 font-adobe">
                   読書で、人生を楽しむ人を増やす
                 </h2>
                 <p className="text-sm md:text-base font-medium tracking-wide text-[#ccb054] drop-shadow-md">
@@ -54,7 +54,7 @@ export default function Home() {
                 {/* 既存の左側アクセントバーをそのまま適用 */}
                 <div className="hidden md:block absolute left-0 top-0 bottom-0 w-1 bg-[#ccb054] rounded-l-lg"></div>
                 {/* 以下、既存のビジョン内容 */}
-                <h2 className="text-lg md:text-3xl font-bold mb-1 luxury-text glow animate-text-shadow-drop-center font-adobe">
+                <h2 className="text-lg md:text-3xl font-bold mb-1 font-adobe">
                   日本一coolな(格好良い)本屋さん
                 </h2>
                 <p className="text-sm md:text-base font-medium tracking-wide text-[#ccb054] drop-shadow-md">
