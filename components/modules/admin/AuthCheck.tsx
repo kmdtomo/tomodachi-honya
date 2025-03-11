@@ -30,7 +30,7 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     
     setTimeout(() => {
-      if (password === 'tomodati') {
+      if (password === 'tomodachi') {
         localStorage.setItem('adminAuth', JSON.stringify({ timestamp: Date.now() }));
         setIsAuthorized(true);
       } else {
