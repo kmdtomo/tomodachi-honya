@@ -26,11 +26,30 @@ export async function GET(request: NextRequest) {
     
     if (data.items && data.items.length > 0) {
       const volumeInfo = data.items[0].volumeInfo;
+      
+      // サムネイルURLの最適化
+      let thumbnailUrl = volumeInfo.imageLinks?.thumbnail || "";
+      
+      // Google Booksの画像URLを高解像度版に変換
+      // zoom=1は標準サイズ、zoom=2は大きいサイズ
+      if (thumbnailUrl) {
+        // HTTPSに変換
+        thumbnailUrl = thumbnailUrl.replace('http://', 'https://');
+        
+        // 画像サイズパラメータを変更（より高解像度に）
+        thumbnailUrl = thumbnailUrl.replace('zoom=1', 'zoom=2');
+        
+        // エッジ除去パラメータを追加（より良い表示のため）
+        if (!thumbnailUrl.includes('edge=curl')) {
+          thumbnailUrl = thumbnailUrl.replace('&source=gbs_api', '&edge=nocurl&source=gbs_api');
+        }
+      }
+      
       const bookData = {
         title: volumeInfo.title || "",
         authors: volumeInfo.authors || [],
         description: volumeInfo.description || "概要はありません。",
-        thumbnail: volumeInfo.imageLinks?.thumbnail || "",
+        thumbnail: thumbnailUrl,
       };
       return NextResponse.json(bookData);
     } else {
