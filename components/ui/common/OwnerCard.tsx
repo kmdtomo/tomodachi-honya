@@ -87,11 +87,11 @@ export function OwnerCard({ owner, onClick }: OwnerCardProps) {
               <span>{owner.age}歳</span>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-2 mb-4">
+            <div className="flex flex-wrap justify-center gap-2 mb-4 max-h-[4.5rem] overflow-hidden">
               {owner.hobby?.slice(0, 5).map((h: HobbyType, index: number) => (
                 <span
                   key={index}
-                  className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm text-white max-w-[138px] truncate"
+                  className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm text-white max-w-[138px] truncate inline-block"
                 >
                   {h.owner_hobby}
                 </span>

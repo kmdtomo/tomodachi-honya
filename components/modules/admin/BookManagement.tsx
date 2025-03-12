@@ -13,6 +13,7 @@ import { Loading } from "@/components/ui/common/loading";
 import { AdminFormModal } from "@/components/ui/admin/AdminFormModal";
 import { BookCard } from "@/components/ui/common/BookCard";
 import { SearchBar } from "@/components/ui/admin/SearchBar";
+import Image from 'next/image';
 
 type BookVolume = {
   title: string;
@@ -265,6 +266,27 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
           toast.error(error instanceof Error ? error.message : "画像のアップロードに失敗しました");
           setIsSubmitting(false);
           return;
+        }
+      } 
+      // GoogleBooks APIから取得した画像をダウンロードして最適化する
+      else if (bookPreview?.thumbnail && !isManualEntry && !thumbnailUrl) {
+        try {
+          // 画像URLから画像をフェッチ
+          const response = await fetch(bookPreview.thumbnail);
+          if (!response.ok) throw new Error("画像の取得に失敗しました");
+          
+          const blob = await response.blob();
+          const file = new File([blob], `book-${Date.now()}.jpg`, { type: 'image/jpeg' });
+          
+          // 画像を最適化してアップロード
+          const urls = await uploadImages([file]);
+          if (urls && urls.length > 0) {
+            thumbnailUrl = urls[0];
+          }
+        } catch (error) {
+          console.error("GoogleBooks画像処理エラー:", error);
+          // エラーが発生しても元の画像URLを使用
+          thumbnailUrl = bookPreview.thumbnail;
         }
       }
       
@@ -588,11 +610,14 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
                       <div className="mb-4">
                         <label className="block mb-2">サムネイル画像</label>
                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                          <div className="w-24 h-32 bg-gray-700 rounded-md overflow-hidden">
-                            <img 
-                              src={bookPreview.thumbnail || "/no-image.jpg"} 
-                              alt="サムネイルプレビュー" 
-                              className="w-full h-full object-cover"
+                          <div className="w-[125px] h-[175px] flex-shrink-0 bg-gray-700 rounded-md overflow-hidden">
+                            <Image 
+                              src={bookPreview.thumbnail || "/no-image.jpg"}
+                              alt="サムネイルプレビュー"
+                              width={500}
+                              height={700}
+                              style={{ objectFit: 'cover' }}
+                              className="w-full h-full object-cover rounded-sm"
                             />
                           </div>
                           <Input
@@ -607,24 +632,57 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
                   ) : (
                     // プレビュー表示
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 bg-gray-800/50 p-4 sm:p-5 rounded-lg">
-                      <div className="w-full sm:w-1/4 aspect-[2/3] max-w-[150px] mx-auto sm:mx-0 flex-shrink-0">
-                        <img
-                          src={bookPreview.thumbnail || "/no-image.jpg"}
-                          alt={bookPreview.title}
-                          className="w-full h-full object-contain rounded-md shadow-md"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-xl font-bold text-white mb-2">{bookPreview.title}</h4>
-                        <div className="mb-4">
-                          <p className="text-sm text-gray-300 mb-1 font-semibold">著者</p>
-                          <p className="text-base text-white">{bookPreview.authors.join(", ") || "不明"}</p>
+                      {/* PC表示用のレイアウト */}
+                      <div className="hidden sm:flex sm:flex-row gap-6 w-full">
+                        <div className="w-[125px] h-[175px] flex-shrink-0 bg-gray-700 rounded-md overflow-hidden">
+                          <Image
+                            src={bookPreview.thumbnail || "/no-image.jpg"}
+                            alt={bookPreview.title}
+                            width={500}
+                            height={700}
+                            style={{ objectFit: 'cover' }}
+                            className="w-full h-full object-cover rounded-sm"
+                          />
                         </div>
-                        <div>
-                          <p className="text-sm text-gray-300 mb-1 font-semibold">あらすじ</p>
-                          <p className="text-sm leading-relaxed text-gray-100 max-h-[150px] overflow-y-auto">
-                            {bookPreview.description || "あらすじはありません。"}
-                          </p>
+                        <div className="flex-1">
+                          <h4 className="text-xl font-bold text-white mb-2">{bookPreview.title}</h4>
+                          <div className="mb-4">
+                            <p className="text-sm text-gray-300 mb-1 font-semibold">著者</p>
+                            <p className="text-base text-white">{bookPreview.authors.join(", ") || "不明"}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-300 mb-1 font-semibold">あらすじ</p>
+                            <p className="text-sm leading-relaxed text-gray-100 max-h-[150px] overflow-y-auto">
+                              {bookPreview.description || "あらすじはありません。"}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* スマホ表示用のレイアウト */}
+                      <div className="flex flex-col sm:hidden w-full">
+                        <div className="w-[125px] h-[175px] mx-auto mb-4 bg-gray-700 rounded-md overflow-hidden">
+                          <Image
+                            src={bookPreview.thumbnail || "/no-image.jpg"}
+                            alt={bookPreview.title}
+                            width={500}
+                            height={700}
+                            style={{ objectFit: 'cover' }}
+                            className="w-full h-full object-cover rounded-sm"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <h4 className="text-xl font-bold text-white mb-2 text-center">{bookPreview.title}</h4>
+                          <div className="mb-4">
+                            <p className="text-sm text-gray-300 mb-1 font-semibold">著者</p>
+                            <p className="text-base text-white">{bookPreview.authors.join(", ") || "不明"}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-300 mb-1 font-semibold">あらすじ</p>
+                            <p className="text-sm leading-relaxed text-gray-100 max-h-[150px] overflow-y-auto">
+                              {bookPreview.description || "あらすじはありません。"}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
