@@ -158,7 +158,7 @@ export async function getOwners() {
     const { data, error } = await supabase
       .from('owner')
       .select('*, hobby(*)')
-      .order('created_at', { ascending: true });
+      .order('display_order', { ascending: true });
 
     if (error) throw error;
     return { data, error: null };
