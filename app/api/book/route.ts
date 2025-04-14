@@ -24,26 +24,19 @@ export async function GET(request: NextRequest) {
 
     const data = await res.json();
     
+    // デバッグ用ログ
+    console.log('Google Books API Response:', JSON.stringify(data, null, 2));
+    
     if (data.items && data.items.length > 0) {
       const volumeInfo = data.items[0].volumeInfo;
       
-      // サムネイルURLの最適化
-      let thumbnailUrl = volumeInfo.imageLinks?.thumbnail || "";
+      // デバッグ用ログ
+      console.log('Volume Info:', JSON.stringify(volumeInfo, null, 2));
+      console.log('Image Links:', JSON.stringify(volumeInfo.imageLinks, null, 2));
       
-      // Google Booksの画像URLを高解像度版に変換
-      // zoom=1は標準サイズ、zoom=2は大きいサイズ
-      if (thumbnailUrl) {
-        // HTTPSに変換
-        thumbnailUrl = thumbnailUrl.replace('http://', 'https://');
-        
-        // 画像サイズパラメータを変更（より高解像度に）
-        thumbnailUrl = thumbnailUrl.replace('zoom=1', 'zoom=2');
-        
-        // エッジ除去パラメータを追加（より良い表示のため）
-        if (!thumbnailUrl.includes('edge=curl')) {
-          thumbnailUrl = thumbnailUrl.replace('&source=gbs_api', '&edge=nocurl&source=gbs_api');
-        }
-      }
+      // サムネイルURLを取得（処理せずそのまま使用）
+      const thumbnailUrl = volumeInfo.imageLinks?.thumbnail || "";
+      console.log('Original Thumbnail URL:', thumbnailUrl);
       
       const bookData = {
         title: volumeInfo.title || "",

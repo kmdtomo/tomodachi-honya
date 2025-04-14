@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import { Book, Owner } from "@/types/database";
 import { createBook, updateBook, deleteBook, getBooks } from "@/actions/supabase/book/actions";
 import { uploadImages } from "@/utils/uploadImage";
+import { convertToHttps } from "@/utils/imageHelper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -135,29 +136,28 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
       return;
     }
 
-    setIsSubmitting(true);
+    setIsLoading(true);
+
     try {
-      const res = await fetch(`/api/book?isbn=${isbnInput.replace(/-/g, "")}`);
-      const data = await res.json();
-      
-      if (!res.ok) {
-        alert(data.error || 'APIリクエストに失敗しました');
-        return;
+      const response = await fetch(`/api/book?isbn=${isbnInput}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "本の情報が取得できませんでした");
       }
+
+      const bookData = await response.json();
       
-      if (!data || Object.keys(data).length === 0) {
-        alert("入力されたISBNに該当する本が見つかりませんでした");
-        return;
-      }
+      // サムネイルURLをHTTPSに変換
+      bookData.thumbnail = convertToHttps(bookData.thumbnail);
       
-      setBookPreview(data);
-    } catch (error: any) {
-      console.error("本の情報取得エラー:", error);
-      alert(error.message || "本の情報が取得できませんでした");
-      toast.error(error.message || "本の情報が取得できませんでした");
-      setBookPreview(null);
+      setBookPreview(bookData);
+      setIsManualEntry(false);
+      toast.success("本の情報を取得しました");
+    } catch (error) {
+      console.error("ISBN取得エラー:", error);
+      toast.error(error instanceof Error ? error.message : "本の情報が取得できませんでした");
     } finally {
-      setIsSubmitting(false);
+      setIsLoading(false);
     }
   };
 
@@ -612,7 +612,7 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                           <div className="w-[125px] h-[175px] flex-shrink-0 bg-gray-700 rounded-md overflow-hidden">
                             <Image 
-                              src={bookPreview.thumbnail || "/no-image.jpg"}
+                              src={convertToHttps(bookPreview.thumbnail || "/no-image.jpg")}
                               alt="サムネイルプレビュー"
                               width={500}
                               height={700}
@@ -636,7 +636,7 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
                       <div className="hidden sm:flex sm:flex-row gap-6 w-full">
                         <div className="w-[125px] h-[175px] flex-shrink-0 bg-gray-700 rounded-md overflow-hidden">
                           <Image
-                            src={bookPreview.thumbnail || "/no-image.jpg"}
+                            src={convertToHttps(bookPreview.thumbnail || "/no-image.jpg")}
                             alt={bookPreview.title}
                             width={500}
                             height={700}
@@ -663,7 +663,7 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
                       <div className="flex flex-col sm:hidden w-full">
                         <div className="w-[125px] h-[175px] mx-auto mb-4 bg-gray-700 rounded-md overflow-hidden">
                           <Image
-                            src={bookPreview.thumbnail || "/no-image.jpg"}
+                            src={convertToHttps(bookPreview.thumbnail || "/no-image.jpg")}
                             alt={bookPreview.title}
                             width={500}
                             height={700}

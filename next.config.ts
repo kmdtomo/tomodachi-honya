@@ -18,12 +18,24 @@ const nextConfig: NextConfig = {
         hostname: 'images.unsplash.com',
       },
       {
+        protocol: 'https',
+        hostname: 'books.google.com',
+        pathname: '/books/**',
+      },
+      {
         protocol: 'http',
         hostname: 'books.google.com',
+        pathname: '/books/**',
       },
       {
         protocol: 'https',
-        hostname: 'books.google.com',
+        hostname: 'books.googleapis.com',
+        pathname: '/books/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'books.googleapis.com',
+        pathname: '/books/**',
       },
     ],
   },
