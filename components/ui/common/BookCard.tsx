@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Book } from "@/types/database";
 import Image from 'next/image';
+import { convertToHttps } from "@/utils/imageHelper";
 
 type BookCardProps = {
   book: Book;
@@ -10,6 +11,11 @@ type BookCardProps = {
 };
 
 export function BookCard({ book, onClick }: BookCardProps) {
+  // 画像エラー時の処理
+  const [imgError, setImgError] = useState(false);
+  // サムネイルURLをHTTPSに変換（ただしエラー時はデフォルト画像を使用）
+  const thumbnailUrl = imgError ? "/no-image.jpg" : convertToHttps(book.thumbnail || "/no-image.jpg");
+
   return (
     <div 
       key={book.id}
@@ -20,12 +26,14 @@ export function BookCard({ book, onClick }: BookCardProps) {
       <div className="sm:hidden w-full rounded-md overflow-hidden">
         <div className="w-[125px] h-[175px] flex-shrink-0 mx-auto mb-4">
           <Image 
-            src={book.thumbnail || "/no-image.jpg"}
+            src={thumbnailUrl}
             alt={book.title || "書籍画像"}
             width={500}
             height={300}
             style={{ objectFit: 'cover' }}
             className="w-full h-full object-cover rounded-sm"
+            onError={() => setImgError(true)}
+            priority
           />
         </div>
         <div className="w-full space-y-2">
@@ -52,12 +60,14 @@ export function BookCard({ book, onClick }: BookCardProps) {
       <div className="hidden sm:flex sm:flex-row gap-4 ">
         <div className="w-[125px] h-[175px] flex-shrink-0">
           <Image 
-            src={book.thumbnail || "/no-image.jpg"}
+            src={thumbnailUrl}
             alt={book.title || "書籍画像"}
             width={500}
             height={300}
             style={{ objectFit: 'cover' }}
             className="w-full h-full object-cover rounded-sm"
+            onError={() => setImgError(true)}
+            priority
           />
         </div>
         <div className="flex-1 space-y-2 flex flex-col justify-center">
