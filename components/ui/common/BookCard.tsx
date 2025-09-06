@@ -14,7 +14,7 @@ export function BookCard({ book, onClick }: BookCardProps) {
   // 画像エラー時の処理
   const [imgError, setImgError] = useState(false);
   // サムネイルURLをHTTPSに変換（ただしエラー時はデフォルト画像を使用）
-  const thumbnailUrl = imgError ? "/no-image.jpg" : convertToHttps(book.thumbnail || "/no-image.jpg");
+  const thumbnailUrl = imgError ? "/tomodati.png" : convertToHttps(book.thumbnail || "/tomodati.png");
 
   return (
     <div 

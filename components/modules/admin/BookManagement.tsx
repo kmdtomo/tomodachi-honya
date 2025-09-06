@@ -612,7 +612,7 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                           <div className="w-[125px] h-[175px] flex-shrink-0 bg-gray-700 rounded-md overflow-hidden">
                             <Image 
-                              src={convertToHttps(bookPreview.thumbnail || "/no-image.jpg")}
+                              src={convertToHttps(bookPreview.thumbnail || "/tomodati.png")}
                               alt="サムネイルプレビュー"
                               width={500}
                               height={700}
@@ -636,7 +636,7 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
                       <div className="hidden sm:flex sm:flex-row gap-6 w-full">
                         <div className="w-[125px] h-[175px] flex-shrink-0 bg-gray-700 rounded-md overflow-hidden">
                           <Image
-                            src={convertToHttps(bookPreview.thumbnail || "/no-image.jpg")}
+                            src={convertToHttps(bookPreview.thumbnail || "/tomodati.png")}
                             alt={bookPreview.title}
                             width={500}
                             height={700}
@@ -663,7 +663,7 @@ export default function BookManagement({ initialBooks, initialOwners }: BookMana
                       <div className="flex flex-col sm:hidden w-full">
                         <div className="w-[125px] h-[175px] mx-auto mb-4 bg-gray-700 rounded-md overflow-hidden">
                           <Image
-                            src={convertToHttps(bookPreview.thumbnail || "/no-image.jpg")}
+                            src={convertToHttps(bookPreview.thumbnail || "/tomodati.png")}
                             alt={bookPreview.title}
                             width={500}
                             height={700}
