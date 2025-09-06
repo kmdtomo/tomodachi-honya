@@ -30,10 +30,6 @@ export async function GET(request: NextRequest) {
     if (data.items && data.items.length > 0) {
       const volumeInfo = data.items[0].volumeInfo;
       
-      // デバッグ用ログ
-      console.log('Volume Info:', JSON.stringify(volumeInfo, null, 2));
-      console.log('Image Links:', JSON.stringify(volumeInfo.imageLinks, null, 2));
-      
       // サムネイルURLを取得（処理せずそのまま使用）
       const thumbnailUrl = volumeInfo.imageLinks?.thumbnail || "";
       console.log('Original Thumbnail URL:', thumbnailUrl);

@@ -3,6 +3,8 @@
 import { Book } from "@/types/database";
 import { BookCard } from "@/components/ui/common/BookCard";
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
+import { convertToHttps } from "@/utils/imageHelper";
 import { useState } from "react";
 import { AdminFormModal } from "@/components/ui/admin/AdminFormModal";
 
@@ -48,9 +50,12 @@ export function OwnerBooksList({ books }: BookListProps) {
           <div className="space-y-8">
             <div className="flex flex-col items-center md:flex-row gap-6 mt-4 ">
               <div className="max-w-[150px] max-h-[220px] mx-auto md:mx-0">
-                <img
-                  src={selectedBook.thumbnail || "/no-image.jpg"}
+                <Image
+                  src={convertToHttps(selectedBook.thumbnail || "/tomodati.png")}
                   alt={selectedBook.title || "書籍画像"}
+                  width={500}
+                  height={700}
+                  style={{ objectFit: 'cover' }}
                   className="w-full h-full object-cover rounded-lg"
                 />
               </div>
